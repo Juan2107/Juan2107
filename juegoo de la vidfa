@@ -1,0 +1,62 @@
+- from pickle import FALSE, TRUE
+from telnetlib import STATUS
+from turtle import bgcolor
+import pygame 
+import numpy as np 
+import time, os 
+
+pygame.init ()
+
+size = WIDTH, HEIGHT = 700, 700
+nX, nY = 70, 70
+xSize = WIDTH/nX
+ySize = HEIGHT/nY
+
+screen = pygame.display.set_mode(size)
+bg_color= (255,255,255)
+live_color= (0,143,57)
+dead_color= (128,128,128)
+
+status = np.zeros((nX,nY)) 
+
+pausa=FALSE
+
+running=TRUE
+
+status[22,22] = 1
+status[23,23] = 1
+status[24,24] = 1
+status[25,25] = 1
+status[26,26] = 1
+status[27,27] = 1
+
+status[7,4] = 1
+status[7,3] = 1
+status[7,2] = 1
+status[7,1] = 1
+status[7,0] = 1
+
+status[1,25] = 1
+status[7,40] = 1
+status[40,2] = 1
+
+while running:
+   newStatus = np.copy(status)
+
+   for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+           running = False
+
+        if event.type == pygame.KEYDOWN:
+            pause = not pause 
+
+        mouseClick = pygame.mouse.get_pressed()
+        if sum(mouseClick) > 0:
+            posX, posY = pygame.mouse.get_pos()
+            x, y = int(np.floor(posX/xSize)). int(np.floor(posY/xSize))
+            newStatus [x,y] = np.abs(newStatus[x,y]-1)
+            newStatus [x,y] = not mouseClick[2]
+
+    screen.fill(bg_color)
+    time.sleep(0.1)
+
